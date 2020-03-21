@@ -1,0 +1,6 @@
+server:
+  port: 9025
+  servlet:
+    context-path: /makefriends
+  tomcat:
+    uri-encoding: UTF-8
