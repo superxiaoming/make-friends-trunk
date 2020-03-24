@@ -2,8 +2,11 @@ package com.example.makefriends.dao;
 
 import com.example.makefriends.entity.database.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import javax.transaction.Transactional;
 
 /**
  * @program: makefriends
@@ -13,13 +16,6 @@ import java.util.List;
  **/
 
 public interface UserDao extends JpaRepository<User, Integer> {
-
-    /**
-     * @description: 通过用户名获取用户列表
-     * @Author: yinshm
-     * @Date: 00:46 2020-03-19
-     */
-    List<User> findByUsernameIs(String username);
 
     /**
      * @description: 通过用户名获取用户信息
@@ -34,4 +30,14 @@ public interface UserDao extends JpaRepository<User, Integer> {
      * @Date: 14:50 2020-03-20
      */
     User findUserById(int id);
+
+    /**
+     * @description: 修改密码
+     * @Author: yinshm
+     * @Date: 20:04 2020-03-22
+     */
+    @Modifying
+    @Transactional
+    @Query("update sys_user set password = :newPassword where id = :userId")
+    void changePassword(@Param("userId")int userId, @Param("newPassword") String newPassword);
 }

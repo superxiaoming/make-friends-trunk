@@ -30,4 +30,8 @@ public class UserService {
     public User getUserByUserId(int id){
         return userDao.findUserById(id);
     }
+
+    public void changePassword(int userId, String newPassword){
+        userDao.changePassword(userId, newPassword);
+    }
 }

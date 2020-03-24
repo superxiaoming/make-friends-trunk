@@ -47,6 +47,7 @@ public class UserController {
         String token = tokenService.getToken(user);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token", token);
+        jsonObject.put("userId", user.getId());
         responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage(), jsonObject);
         return responseUtil;
     }
@@ -56,7 +57,7 @@ public class UserController {
      * @Author: yinshm
      * @Date: 18:10 2020-03-20
      */
-    @RequestMapping(value = "/addUser")
+    @RequestMapping(value = "/register")
     public Object addUser(HttpServletRequest httpServletRequest){
         ResponseUtil responseUtil;
         try{
@@ -89,11 +90,25 @@ public class UserController {
      * @Author: yinshm
      * @Date: 18:13 2020-03-20
      */
-    @RequestMapping(value = "getUserInfoById")
+    @RequestMapping(value = "/getUserInfoById")
     public Object getUserInfoById(@RequestParam int userId){
         User user = userService.getUserByUserId(userId);
         ResponseUtil responseUtil;
         responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage(), user);
+        return responseUtil;
+    }
+
+    @PassToken
+    @RequestMapping(value = "/changePassword")
+    public Object changePassword(@RequestParam int userId, @RequestParam String password, @RequestParam String newPassword){
+        ResponseUtil responseUtil;
+        User user = userService.getUserByUserId(userId);
+        if(user.getPassword().equals(password)){
+            userService.changePassword(userId, newPassword);
+            responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage());
+            return responseUtil;
+        }
+        responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
         return responseUtil;
     }
 }
