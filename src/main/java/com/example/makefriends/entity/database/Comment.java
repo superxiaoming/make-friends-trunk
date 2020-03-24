@@ -1,5 +1,6 @@
 package com.example.makefriends.entity.database;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,11 +27,12 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer topic_id;
+    private Integer topicId;
 
     private String comment;
 
-    private Date create_time;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
-    private Integer commentator_id;
+    private Integer commentatorId;
 }

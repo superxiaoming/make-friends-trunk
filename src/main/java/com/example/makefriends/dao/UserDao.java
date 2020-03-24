@@ -40,4 +40,13 @@ public interface UserDao extends JpaRepository<User, Integer> {
     @Transactional
     @Query("update sys_user set password = :newPassword where id = :userId")
     void changePassword(@Param("userId")int userId, @Param("newPassword") String newPassword);
+
+    @Modifying
+    @Transactional
+    @Query("update sys_user set nickname = :nickname, school = :school, age = :age," +
+            "college = :college, major = :major, tags = :tags, sign = :sign," +
+            "headpic = :picAddress where id = :userId")
+    void editUserInfo(@Param("userId")int userId, @Param("nickname") String nickname, @Param("school") String school,
+                      @Param("age") int age, @Param("college") String college, @Param("major") String major,
+                      @Param("tags") String tags, @Param("sign") String sign, @Param("picAddress") String picAddress);
 }

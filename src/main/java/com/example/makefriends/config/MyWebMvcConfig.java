@@ -3,12 +3,10 @@ package com.example.makefriends.config;
 import com.example.makefriends.interceptor.MyInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
- * @program: visualization
+ * @program: makefriends
  * @description: webmvc CORS 配置
  * @author: YinShm
  * @date: 2019-12-10 22:00
@@ -36,5 +34,11 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(myInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns();
+    }
+
+    @Override
+    public void addResourceHandlers (ResourceHandlerRegistry registry){
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("file:///Users/yinshiming/uploadPics/");
     }
 }

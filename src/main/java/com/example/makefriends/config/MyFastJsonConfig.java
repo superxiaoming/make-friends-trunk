@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @program: visualization
+ * @program: makefriends
  * @description: FastJson配置类
  * @author: YinShm
  * @date: 2019-12-10 02:39

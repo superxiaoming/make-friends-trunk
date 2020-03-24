@@ -26,7 +26,7 @@ public class TopicService {
      * @Date: 20:33 2020-03-23
      */
     public List<Topic> getTopicsByContentType(int contentType){
-        return topicDao.findTopicsByContentType(contentType);
+        return topicDao.getTopicsByContentType(contentType);
     }
 
     /**
@@ -44,4 +44,8 @@ public class TopicService {
      * @Date: 20:44 2020-03-23
      */
     public void addtopic(Topic topic){ topicDao.save(topic); }
+
+    public Topic getLikes(int topicId){ return topicDao.findTopicById(topicId); }
+
+    public void addLikes(int topicId, int likes){ topicDao.addLikes(topicId, likes); }
 }

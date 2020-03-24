@@ -3,15 +3,19 @@ package com.example.makefriends.controller;
 import com.example.makefriends.annotation.PassToken;
 import com.example.makefriends.entity.database.Topic;
 import com.example.makefriends.service.TopicService;
+import com.example.makefriends.utils.FileUtils;
 import com.example.makefriends.utils.ResponseCode;
 import com.example.makefriends.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: makefriends
@@ -47,21 +51,60 @@ public class TopicController {
 
     @PassToken
     @RequestMapping(value = "/addTopic")
-    public Object addTopic(@RequestParam int creatorId, @RequestParam String contents, @RequestParam int contentType){
+    public Object addTopic(HttpServletRequest request, MultipartFile pictures){
+        ResponseUtil responseUtil;
+        // 文件存储并获取新文件名
+        String newFileName = FileUtils.upload(pictures, pictures.getOriginalFilename());
+        if(newFileName.equals("")){
+            responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
+            return responseUtil;
+        }
+        // 生成文件访问地址
+        String picAddress = FileUtils.getPicAddress(request, newFileName);
+
+        int creatorId = Integer.parseInt(request.getParameter("creatorId"));
+        String contents = request.getParameter("contents");
+        int contentType = Integer.parseInt(request.getParameter("contentType"));
+
         Topic topic = new Topic();
         topic.setCreatorId(creatorId);
         topic.setContents(contents);
         topic.setContentType(contentType);
         topic.setCreateTime(new Date());
         topic.setLikes(0);
-        ResponseUtil responseUtil;
+        topic.setPicAddress(picAddress);
+
         try{
             topicService.addtopic(topic);
             responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(),
                     ResponseCode.SUCCESS_CODE.getCodeMessage());
             return responseUtil;
         } catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
+            responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(),
+                    ResponseCode.FAILED_CODE.getCodeMessage());
+            return responseUtil;
+        }
+    }
+
+    @PassToken
+    @RequestMapping(value = "/addLikes")
+    public Object addLikes(@RequestParam int topicId){
+        ResponseUtil responseUtil;
+        Topic topic = topicService.getLikes(topicId);
+        if(topic == null){
+            responseUtil = new ResponseUtil(ResponseCode.TOPIC_NOT_EXIST.getCodeNumber(),
+                    ResponseCode.TOPIC_NOT_EXIST.getCodeMessage());
+            return responseUtil;
+        }
+        try{
+            int likes = topic.getLikes() + 1;
+            topicService.addLikes(topicId, likes);
+            responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(),
+                    ResponseCode.SUCCESS_CODE.getCodeMessage(), likes);
+            return responseUtil;
+        }catch (Exception e){
+            e.printStackTrace();
             responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(),
                     ResponseCode.FAILED_CODE.getCodeMessage());
             return responseUtil;

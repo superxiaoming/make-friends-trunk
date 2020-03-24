@@ -13,7 +13,8 @@ public enum ResponseCode {
     FAILED_CODE(10001,"失败"),
     NO_TOKEN(10002, "缺失token或token无效"),
     SYSTEM_ERROR(10003,"系统错误"),
-    USER_NOT_EXIST(10004,"用户不存在");
+    USER_NOT_EXIST(10004,"用户不存在"),
+    TOPIC_NOT_EXIST(10005,"话题不存在");
 
     private int codeNumber;
     private String codeMessage;

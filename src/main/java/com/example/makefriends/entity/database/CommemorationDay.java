@@ -1,5 +1,6 @@
 package com.example.makefriends.entity.database;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,11 +27,12 @@ public class CommemorationDay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer creator_id;
+    private Integer creatorId;
 
     private String content;
 
-    private Date create_time;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
-    private Date memory_day;
+    private Date memoryDay;
 }

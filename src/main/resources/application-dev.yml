@@ -23,3 +23,5 @@ spring:
   jpa:
     show-sql: true
     database: mysql
+web:
+  upload-path: file:////Users/yinshiming/

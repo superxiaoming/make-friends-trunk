@@ -1,5 +1,6 @@
 package com.example.makefriends.entity.database;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +29,7 @@ public class LeaveMessage {
 
     private Integer creatorId;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     private String content;

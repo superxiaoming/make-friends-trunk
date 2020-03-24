@@ -5,6 +5,7 @@ import com.example.makefriends.annotation.PassToken;
 import com.example.makefriends.entity.database.User;
 import com.example.makefriends.service.TokenService;
 import com.example.makefriends.service.UserService;
+import com.example.makefriends.utils.FileUtils;
 import com.example.makefriends.utils.ResponseCode;
 import com.example.makefriends.utils.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,16 +31,11 @@ public class UserController {
     @Autowired
     TokenService tokenService;
 
-    /**
-     * @description: 登陆入口，无需token验证
-     * @Author: yinshm
-     * @Date: 18:10 2020-03-20
-     */
     @PassToken
     @RequestMapping(value = "/login")
-    public Object login(@RequestParam String userName, @RequestParam String password){
+    public Object login(@RequestParam String username, @RequestParam String password){
         ResponseUtil responseUtil;
-        User user = userService.getUserByUsername(userName);
+        User user = userService.getUserByUsername(username);
         if(!password.equals(user.getPassword())){
             responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
             return responseUtil;
@@ -52,11 +48,7 @@ public class UserController {
         return responseUtil;
     }
 
-    /**
-     * @description: 用户注册
-     * @Author: yinshm
-     * @Date: 18:10 2020-03-20
-     */
+    @PassToken
     @RequestMapping(value = "/register")
     public Object addUser(HttpServletRequest httpServletRequest){
         ResponseUtil responseUtil;
@@ -75,25 +67,46 @@ public class UserController {
         return responseUtil;
     }
 
-    /**
-     * @description: 编辑用户信息
-     * @Author: yinshm
-     * @Date: 18:13 2020-03-20
-     */
+    @PassToken
     @PostMapping(value = "/editUser")
     public Object editUser(MultipartFile headPic, HttpServletRequest httpServletRequest){
-        return null;
+        ResponseUtil responseUtil;
+        // 文件存储并获取新文件名
+        String newFileName = FileUtils.upload(headPic, headPic.getOriginalFilename());
+        if(newFileName.equals("")){
+            responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
+            return responseUtil;
+        }
+        int userId = Integer.parseInt(httpServletRequest.getParameter("userId"));
+        String nickname = httpServletRequest.getParameter("nickname");
+        String school = httpServletRequest.getParameter("school");
+        int age = Integer.parseInt(httpServletRequest.getParameter("age"));
+        String college = httpServletRequest.getParameter("college");
+        String major = httpServletRequest.getParameter("major");
+        String tags = httpServletRequest.getParameter("tags");
+        String sign = httpServletRequest.getParameter("sign");
+        // 生成文件访问地址
+        String picAddress = FileUtils.getPicAddress(httpServletRequest, newFileName);
+
+        try{
+            userService.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress);
+            responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage());
+            return responseUtil;
+        } catch(Exception e){
+            e.printStackTrace();
+            responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
+            return responseUtil;
+        }
     }
 
-    /**
-     * @description: 根据用户id获取用户信息
-     * @Author: yinshm
-     * @Date: 18:13 2020-03-20
-     */
     @RequestMapping(value = "/getUserInfoById")
     public Object getUserInfoById(@RequestParam int userId){
         User user = userService.getUserByUserId(userId);
         ResponseUtil responseUtil;
+        if(user == null){
+            responseUtil = new ResponseUtil(ResponseCode.USER_NOT_EXIST.getCodeNumber(), ResponseCode.USER_NOT_EXIST.getCodeMessage());
+            return responseUtil;
+        }
         responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage(), user);
         return responseUtil;
     }
@@ -103,6 +116,10 @@ public class UserController {
     public Object changePassword(@RequestParam int userId, @RequestParam String password, @RequestParam String newPassword){
         ResponseUtil responseUtil;
         User user = userService.getUserByUserId(userId);
+        if(user == null){
+            responseUtil = new ResponseUtil(ResponseCode.USER_NOT_EXIST.getCodeNumber(), ResponseCode.USER_NOT_EXIST.getCodeMessage());
+            return responseUtil;
+        }
         if(user.getPassword().equals(password)){
             userService.changePassword(userId, newPassword);
             responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage());

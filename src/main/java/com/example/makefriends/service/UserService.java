@@ -34,4 +34,9 @@ public class UserService {
     public void changePassword(int userId, String newPassword){
         userDao.changePassword(userId, newPassword);
     }
+
+    public void editUserInfo(int userId, String nickname, String school, int age, String college, String major,
+                             String tags, String sign, String picAddress){
+        userDao.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress);
+    }
 }
