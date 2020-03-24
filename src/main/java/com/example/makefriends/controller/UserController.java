@@ -85,11 +85,12 @@ public class UserController {
         String major = httpServletRequest.getParameter("major");
         String tags = httpServletRequest.getParameter("tags");
         String sign = httpServletRequest.getParameter("sign");
+        int sex = Integer.parseInt(httpServletRequest.getParameter("sex"));
         // 生成文件访问地址
         String picAddress = FileUtils.getPicAddress(httpServletRequest, newFileName);
 
         try{
-            userService.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress);
+            userService.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress, sex);
             responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage());
             return responseUtil;
         } catch(Exception e){

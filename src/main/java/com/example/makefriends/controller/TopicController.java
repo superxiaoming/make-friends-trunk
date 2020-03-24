@@ -2,6 +2,7 @@ package com.example.makefriends.controller;
 
 import com.example.makefriends.annotation.PassToken;
 import com.example.makefriends.entity.database.Topic;
+import com.example.makefriends.entity.response.TopicInfoWithUser;
 import com.example.makefriends.service.TopicService;
 import com.example.makefriends.utils.FileUtils;
 import com.example.makefriends.utils.ResponseCode;
@@ -34,7 +35,7 @@ public class TopicController {
     @PassToken
     @RequestMapping(value = "/getTopicsByContentType")
     public Object getTopicByContentType(@RequestParam int contentType){
-        List<Topic> topics = topicService.getTopicsByContentType(contentType);
+        List<TopicInfoWithUser> topics = topicService.getTopicsByContentType(contentType);
         ResponseUtil responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(),
                 ResponseCode.SUCCESS_CODE.getCodeMessage(), topics);
         return responseUtil;
@@ -43,7 +44,7 @@ public class TopicController {
     @PassToken
     @RequestMapping(value = "/getTopicsByContentTypeAndCreatorId")
     public Object getTopicsByContentTypeAndCreatorId(@RequestParam int creatorId, @RequestParam int contentType){
-        List<Topic> topics = topicService.getTopicsByContentTypeAndCreatorId(creatorId, contentType);
+        List<TopicInfoWithUser> topics = topicService.getTopicsByContentTypeAndCreatorId(creatorId, contentType);
         ResponseUtil responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(),
                 ResponseCode.SUCCESS_CODE.getCodeMessage(), topics);
         return responseUtil;

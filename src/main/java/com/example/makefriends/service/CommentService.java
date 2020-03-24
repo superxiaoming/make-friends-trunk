@@ -2,6 +2,7 @@ package com.example.makefriends.service;
 
 import com.example.makefriends.dao.CommentDao;
 import com.example.makefriends.entity.database.Comment;
+import com.example.makefriends.entity.response.CommentsForTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class CommentService {
     @Autowired
     CommentDao commentDao;
 
-    public List<Comment> getCommentsByTopicId(int topicId){
+    public List<CommentsForTopic> getCommentsByTopicId(int topicId){
         return commentDao.getCommentsByTopicId(topicId);
     }
 

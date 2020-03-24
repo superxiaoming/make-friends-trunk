@@ -2,6 +2,7 @@ package com.example.makefriends.controller;
 
 import com.example.makefriends.annotation.PassToken;
 import com.example.makefriends.entity.database.Comment;
+import com.example.makefriends.entity.response.CommentsForTopic;
 import com.example.makefriends.service.CommentService;
 import com.example.makefriends.utils.ResponseCode;
 import com.example.makefriends.utils.ResponseUtil;
@@ -32,7 +33,7 @@ public class CommentController {
     public Object getCommentsByTopicId(@RequestParam int topicId){
         ResponseUtil responseUtil;
         try{
-            List<Comment> comments = commentService.getCommentsByTopicId(topicId);
+            List<CommentsForTopic> comments = commentService.getCommentsByTopicId(topicId);
             responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(),
                     ResponseCode.SUCCESS_CODE.getCodeMessage(), comments);
             return responseUtil;

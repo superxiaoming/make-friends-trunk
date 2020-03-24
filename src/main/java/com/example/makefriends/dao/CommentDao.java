@@ -1,7 +1,9 @@
 package com.example.makefriends.dao;
 
 import com.example.makefriends.entity.database.Comment;
+import com.example.makefriends.entity.response.CommentsForTopic;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -14,5 +16,9 @@ import java.util.List;
 
 public interface CommentDao extends JpaRepository<Comment, Integer> {
 
-    List<Comment> getCommentsByTopicId(int topicId);
+    @Query(value = "select new com.example.makefriends.entity.response.CommentsForTopic(t1.id, " +
+            "t1.comment, t1.commentatorId, t2.headpic, t2.nickname) " +
+            "from comment as t1, sys_user as t2 where t1.topicId = :topicId and " +
+            "t1.commentatorId = t2.id")
+    List<CommentsForTopic> getCommentsByTopicId(int topicId);
 }

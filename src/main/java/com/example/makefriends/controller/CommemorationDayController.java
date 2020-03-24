@@ -66,7 +66,5 @@ public class CommemorationDayController {
             responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
             return responseUtil;
         }
-
-
     }
 }

@@ -2,6 +2,7 @@ package com.example.makefriends.service;
 
 import com.example.makefriends.dao.TopicDao;
 import com.example.makefriends.entity.database.Topic;
+import com.example.makefriends.entity.response.TopicInfoWithUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class TopicService {
      * @Author: yinshm
      * @Date: 20:33 2020-03-23
      */
-    public List<Topic> getTopicsByContentType(int contentType){
+    public List<TopicInfoWithUser> getTopicsByContentType(int contentType){
         return topicDao.getTopicsByContentType(contentType);
     }
 
@@ -34,7 +35,7 @@ public class TopicService {
      * @Author: yinshm
      * @Date: 20:34 2020-03-23
      */
-    public List<Topic> getTopicsByContentTypeAndCreatorId(int creatorId, int contentType){
+    public List<TopicInfoWithUser> getTopicsByContentTypeAndCreatorId(int creatorId, int contentType){
         return topicDao.findTopicsByCreatorIdAndContentType(creatorId, contentType);
     }
     
