@@ -30,4 +30,8 @@ public class StudyGoalService {
     }
 
     public void addStudyGoal(StudyGoal studyGoal){ studyGoalDao.save(studyGoal); }
+
+    public int getGoalCountByCreatorId(int creatorId){
+        return studyGoalDao.countByCreatorId(creatorId);
+    }
 }

@@ -30,7 +30,6 @@ public class StudyGoalController {
     @Autowired
     StudyGoalService studyGoalService;
 
-    @PassToken
     @RequestMapping(value = "/getStudyGoals")
     public Object getStudyGoals(){
         List<StudyGoalWithUser> studyGoals = studyGoalService.getStudyGoals();
@@ -39,7 +38,6 @@ public class StudyGoalController {
         return responseUtil;
     }
 
-    @PassToken
     @RequestMapping(value = "/getStudyGoalsByCreatorId")
     public Object getStudyGoals(@RequestParam int creatorId){
         List<StudyGoalWithUser> studyGoals = studyGoalService.getStudyGoalsByCreatorId(creatorId);
@@ -48,25 +46,15 @@ public class StudyGoalController {
         return responseUtil;
     }
 
-    @PassToken
     @RequestMapping("/addStudyGoal")
     public Object addStudyGoal(@RequestParam int creatorId, @RequestParam String content, @RequestParam int repeatType,
                                @RequestParam String repeatTime){
         ResponseUtil responseUtil;
         StudyGoal studyGoal = new StudyGoal();
-        DateFormat format = new SimpleDateFormat("HH:mm:ss");
-        Date repeatTime1 = null;
-        try{
-            repeatTime1 = format.parse(repeatTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
-            return responseUtil;
-        }
         studyGoal.setCreatorId(creatorId);
         studyGoal.setContent(content);
         studyGoal.setRepeatType(repeatType);
-        studyGoal.setRepeatTime(repeatTime1);
+        studyGoal.setRepeatTime(repeatTime);
         studyGoal.setCreateTime(new Date());
         try{
             studyGoalService.addStudyGoal(studyGoal);

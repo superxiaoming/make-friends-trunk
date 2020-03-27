@@ -26,8 +26,7 @@ public class StudyGoalWithUser {
 
     private Integer repeatType;
 
-    @JsonFormat(pattern="HH:mm:ss", timezone = "GMT+8")
-    private Date repeatTime;
+    private String repeatTime;
 
     private String nickname;
 
@@ -39,7 +38,7 @@ public class StudyGoalWithUser {
 
     public StudyGoalWithUser() {}
 
-    public StudyGoalWithUser(Integer id, Integer creatorId, String content, Integer repeatType, Date repeatTime,
+    public StudyGoalWithUser(Integer id, Integer creatorId, String content, Integer repeatType, String repeatTime,
                              String nickname, Integer age, Integer sex, String headpic) {
         this.id = id;
         this.creatorId = creatorId;

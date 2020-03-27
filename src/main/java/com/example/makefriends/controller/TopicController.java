@@ -32,7 +32,6 @@ public class TopicController {
     @Autowired
     TopicService topicService;
 
-    @PassToken
     @RequestMapping(value = "/getTopicsByContentType")
     public Object getTopicByContentType(@RequestParam int contentType){
         List<TopicInfoWithUser> topics = topicService.getTopicsByContentType(contentType);
@@ -41,7 +40,6 @@ public class TopicController {
         return responseUtil;
     }
 
-    @PassToken
     @RequestMapping(value = "/getTopicsByContentTypeAndCreatorId")
     public Object getTopicsByContentTypeAndCreatorId(@RequestParam int creatorId, @RequestParam int contentType){
         List<TopicInfoWithUser> topics = topicService.getTopicsByContentTypeAndCreatorId(creatorId, contentType);
@@ -50,30 +48,32 @@ public class TopicController {
         return responseUtil;
     }
 
-    @PassToken
     @RequestMapping(value = "/addTopic")
     public Object addTopic(HttpServletRequest request, MultipartFile pictures){
         ResponseUtil responseUtil;
-        // 文件存储并获取新文件名
-        String newFileName = FileUtils.upload(pictures, pictures.getOriginalFilename());
-        if(newFileName.equals("")){
-            responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
-            return responseUtil;
+        Topic topic = new Topic();
+
+        if(pictures != null){
+            // 文件存储并获取新文件名
+            String newFileName = FileUtils.upload(pictures, pictures.getOriginalFilename());
+            if(newFileName.equals("")){
+                responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
+                return responseUtil;
+            }
+            // 生成文件访问地址
+            String picAddress = FileUtils.getPicAddress(request, newFileName);
+            topic.setPicAddress(picAddress);
         }
-        // 生成文件访问地址
-        String picAddress = FileUtils.getPicAddress(request, newFileName);
 
         int creatorId = Integer.parseInt(request.getParameter("creatorId"));
         String contents = request.getParameter("contents");
         int contentType = Integer.parseInt(request.getParameter("contentType"));
 
-        Topic topic = new Topic();
         topic.setCreatorId(creatorId);
         topic.setContents(contents);
         topic.setContentType(contentType);
         topic.setCreateTime(new Date());
         topic.setLikes(0);
-        topic.setPicAddress(picAddress);
 
         try{
             topicService.addtopic(topic);
@@ -88,7 +88,6 @@ public class TopicController {
         }
     }
 
-    @PassToken
     @RequestMapping(value = "/addLikes")
     public Object addLikes(@RequestParam int topicId){
         ResponseUtil responseUtil;

@@ -29,7 +29,6 @@ public class CommemorationDayController {
     @Autowired
     CommemorationDayService commemorationDayService;
 
-    @PassToken
     @RequestMapping(value = "/getDays")
     public Object getDays(@RequestParam int creatorId){
         ResponseUtil responseUtil;
@@ -39,9 +38,8 @@ public class CommemorationDayController {
         return responseUtil;
     }
 
-    @PassToken
     @RequestMapping(value = "/addDays")
-    public Object addDays(@RequestParam int creatorId, @RequestParam String content, @RequestParam String memoryDay){
+        public Object addDays(@RequestParam int creatorId, @RequestParam String content, @RequestParam String memoryDay){
         ResponseUtil responseUtil;
         CommemorationDay commemorationDay = new CommemorationDay();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");

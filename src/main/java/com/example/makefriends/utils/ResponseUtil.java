@@ -16,27 +16,27 @@ import java.io.Serializable;
 @Setter
 public class ResponseUtil implements Serializable {
 
-    protected int resCode;
+    protected int code;
     protected String resMsg;
     protected Object data;
 
     public ResponseUtil(){}
 
     public ResponseUtil(int resCode, String resMsg, Object data){
-        this.resCode = resCode;
+        this.code = resCode;
         this.resMsg = resMsg;
         this.data = data;
     }
 
     public ResponseUtil(int resCode, String resMsg){
-        this.resCode = resCode;
+        this.code = resCode;
         this.resMsg = resMsg;
     }
 
     @Override
     public String toString(){
         return "Result{" +
-                "resCode=" + resCode +
+                "code=" + code +
                 ", resMsg=" + resMsg +
                 "}";
     }

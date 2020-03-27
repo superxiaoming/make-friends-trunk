@@ -2,6 +2,7 @@ package com.example.makefriends.dao;
 
 import com.example.makefriends.entity.database.LeaveMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface LeaveMessageDao extends JpaRepository<LeaveMessage, Integer> {
      * @Author: yinshm
      * @Date: 22:17 2020-03-24
      */
-    List<LeaveMessage> getLeaveMessagesByCreateFor(int createFor);
+    List<LeaveMessage> getLeaveMessagesByCreateForOrderByCreateTimeDesc(int createFor);
+
+    int countByCreateFor(int createFor);
 }

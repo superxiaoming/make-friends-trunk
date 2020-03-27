@@ -21,7 +21,7 @@ public class CommemorationDayService {
     CommemorationDayDao commemorationDayDao;
 
     public List<CommemorationDay> getCommemorationDaysByCreatorId(int cretorId){
-        return commemorationDayDao.getCommemorationDaysByCreatorId(cretorId);
+        return commemorationDayDao.getCommemorationDaysByCreatorIdOrderByCreateTimeDesc(cretorId);
     }
 
     public void addCommemorationDay(CommemorationDay commemorationDay){

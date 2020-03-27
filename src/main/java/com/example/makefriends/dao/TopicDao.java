@@ -26,7 +26,8 @@ public interface TopicDao extends JpaRepository<Topic, Integer> {
      */
     @Query(value = "select new com.example.makefriends.entity.response.TopicInfoWithUser(t1.id, t1.creatorId, " +
             "t1.contents, t1.contentType, t1.likes, t1.picAddress, t2.nickname, t2.age, t2.sex, t2.headpic) " +
-            "from topic as t1, sys_user as t2 where t1.creatorId = t2.id and t1.contentType = :contentType")
+            "from topic as t1, sys_user as t2 where t1.creatorId = t2.id and t1.contentType = :contentType " +
+            "order by t1.createTime desc")
     List<TopicInfoWithUser> getTopicsByContentType(int contentType);
 
     /**
@@ -37,7 +38,7 @@ public interface TopicDao extends JpaRepository<Topic, Integer> {
     @Query(value = "select new com.example.makefriends.entity.response.TopicInfoWithUser(t1.id, t1.creatorId, " +
             "t1.contents, t1.contentType, t1.likes, t1.picAddress, t2.nickname, t2.age, t2.sex, t2.headpic) " +
             "from topic as t1, sys_user as t2 where t1.creatorId = t2.id and t1.contentType = :contentType and t1.creatorId " +
-            "= :creatorId")
+            "= :creatorId order by t1.createTime desc")
     List<TopicInfoWithUser> findTopicsByCreatorIdAndContentType(int creatorId, int contentType);
 
     Topic findTopicById(int topicId);
@@ -46,4 +47,6 @@ public interface TopicDao extends JpaRepository<Topic, Integer> {
     @Transactional
     @Query("update topic set likes = :likes where id = :topicId")
     void addLikes(@Param("topicId")int topicId, @Param("likes") int likes);
+
+    int countByCreatorId(int creatorId);
 }

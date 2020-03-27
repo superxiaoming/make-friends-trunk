@@ -25,7 +25,7 @@ public class FollowerConnection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer follower_id;
+    private Integer followerId;
 
-    private Integer bewatched_id;
+    private Integer bewatchedId;
 }

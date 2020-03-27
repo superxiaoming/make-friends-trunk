@@ -14,5 +14,5 @@ import java.util.List;
 
 public interface CommemorationDayDao extends JpaRepository<CommemorationDay, Integer> {
 
-    List<CommemorationDay> getCommemorationDaysByCreatorId(int creatorId);
+    List<CommemorationDay> getCommemorationDaysByCreatorIdOrderByCreateTimeDesc(int creatorId);
 }

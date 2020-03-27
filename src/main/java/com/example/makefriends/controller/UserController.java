@@ -3,11 +3,11 @@ package com.example.makefriends.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.makefriends.annotation.PassToken;
 import com.example.makefriends.entity.database.User;
-import com.example.makefriends.service.TokenService;
-import com.example.makefriends.service.UserService;
+import com.example.makefriends.service.*;
 import com.example.makefriends.utils.FileUtils;
 import com.example.makefriends.utils.ResponseCode;
 import com.example.makefriends.utils.ResponseUtil;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,12 +31,24 @@ public class UserController {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    TopicService topicService;
+
+    @Autowired
+    FollwerConnectionService follwerConnectionService;
+
+    @Autowired
+    LeaveMessageService leaveMessageService;
+
+    @Autowired
+    StudyGoalService studyGoalService;
+
     @PassToken
     @RequestMapping(value = "/login")
     public Object login(@RequestParam String username, @RequestParam String password){
         ResponseUtil responseUtil;
         User user = userService.getUserByUsername(username);
-        if(!password.equals(user.getPassword())){
+        if(user == null || !password.equals(user.getPassword())){
             responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
             return responseUtil;
         }
@@ -58,6 +70,9 @@ public class UserController {
             User user = new User();
             user.setUsername(userName);
             user.setPassword(password);
+            user.setNickname("无名氏");
+            user.setAge(20);
+            user.setSex(0);
             userService.addUser(user);
         } catch (Exception e){
             responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
@@ -67,15 +82,17 @@ public class UserController {
         return responseUtil;
     }
 
-    @PassToken
     @PostMapping(value = "/editUser")
     public Object editUser(MultipartFile headPic, HttpServletRequest httpServletRequest){
         ResponseUtil responseUtil;
-        // 文件存储并获取新文件名
-        String newFileName = FileUtils.upload(headPic, headPic.getOriginalFilename());
-        if(newFileName.equals("")){
-            responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
-            return responseUtil;
+        String picAddress = null;
+        if(headPic != null){
+            String newFileName = FileUtils.upload(headPic, headPic.getOriginalFilename());
+            if(newFileName.equals("")){
+                responseUtil = new ResponseUtil(ResponseCode.SYSTEM_ERROR.getCodeNumber(), ResponseCode.SYSTEM_ERROR.getCodeMessage());
+                return responseUtil;
+            }
+            picAddress = FileUtils.getPicAddress(httpServletRequest, newFileName);
         }
         int userId = Integer.parseInt(httpServletRequest.getParameter("userId"));
         String nickname = httpServletRequest.getParameter("nickname");
@@ -86,8 +103,6 @@ public class UserController {
         String tags = httpServletRequest.getParameter("tags");
         String sign = httpServletRequest.getParameter("sign");
         int sex = Integer.parseInt(httpServletRequest.getParameter("sex"));
-        // 生成文件访问地址
-        String picAddress = FileUtils.getPicAddress(httpServletRequest, newFileName);
 
         try{
             userService.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress, sex);
@@ -112,7 +127,6 @@ public class UserController {
         return responseUtil;
     }
 
-    @PassToken
     @RequestMapping(value = "/changePassword")
     public Object changePassword(@RequestParam int userId, @RequestParam String password, @RequestParam String newPassword){
         ResponseUtil responseUtil;
@@ -128,5 +142,41 @@ public class UserController {
         }
         responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
         return responseUtil;
+    }
+
+    @RequestMapping(value = "/getBasicInfo")
+    public Object getBasicInfo(@RequestParam int userId){
+        ResponseUtil responseUtil;
+        JSONObject jsonObject = new JSONObject();
+        try{
+            jsonObject.put("publish", topicService.getTopicCountByCreatorId(userId));
+            jsonObject.put("focus", follwerConnectionService.getWatchedCountByFollowerId(userId));
+            jsonObject.put("message", leaveMessageService.getMessageCountByCreateFor(userId));
+            jsonObject.put("goal", studyGoalService.getGoalCountByCreatorId(userId));
+            responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage(), jsonObject);
+            return responseUtil;
+        } catch (Exception e){
+            e.printStackTrace();
+            responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
+            return responseUtil;
+        }
+    }
+
+    @PassToken
+    @RequestMapping(value = "/getToken")
+    public Object getToken(@RequestParam int userId){
+        ResponseUtil responseUtil;
+        User user = userService.getUserByUserId(userId);
+        try{
+            String token = tokenService.getToken(user);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("token", token);
+            responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage(), jsonObject);
+            return responseUtil;
+        } catch(Exception e){
+            e.printStackTrace();
+            responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
+            return responseUtil;
+        }
     }
 }

@@ -28,7 +28,6 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
-    @PassToken
     @RequestMapping(value = "/getCommentsByTopicId")
     public Object getCommentsByTopicId(@RequestParam int topicId){
         ResponseUtil responseUtil;
@@ -45,7 +44,6 @@ public class CommentController {
         }
     }
 
-    @PassToken
     @RequestMapping(value = "/addComment")
     public Object addComment(@RequestParam int topicId, @RequestParam int commentatorId, @RequestParam String comment){
         ResponseUtil responseUtil;

@@ -26,10 +26,14 @@ public class LeaveMessageService {
      * @Date: 21:54 2020-03-24
      */
     public List<LeaveMessage> getLeaveMessagesByCreateFor(int createFor){
-        return leaveMessageDao.getLeaveMessagesByCreateFor(createFor);
+        return leaveMessageDao.getLeaveMessagesByCreateForOrderByCreateTimeDesc(createFor);
     }
 
     public void saveLeaveMessage(LeaveMessage leaveMessage){
         leaveMessageDao.save(leaveMessage);
+    }
+
+    public int getMessageCountByCreateFor(int createFor){
+        return leaveMessageDao.countByCreateFor(createFor);
     }
 }

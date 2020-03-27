@@ -37,6 +37,10 @@ public class UserService {
 
     public void editUserInfo(int userId, String nickname, String school, int age, String college, String major,
                              String tags, String sign, String picAddress, int sex){
-        userDao.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress, sex);
+        if(picAddress == null){
+            userDao.editUserInfoWithoutHeadpic(userId, nickname, school, age, college, major, tags, sign, sex);
+        } else {
+            userDao.editUserInfo(userId, nickname, school, age, college, major, tags, sign, picAddress, sex);
+        }
     }
 }

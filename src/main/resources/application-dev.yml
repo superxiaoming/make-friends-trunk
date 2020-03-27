@@ -23,5 +23,9 @@ spring:
   jpa:
     show-sql: true
     database: mysql
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 web:
   upload-path: file:////Users/yinshiming/

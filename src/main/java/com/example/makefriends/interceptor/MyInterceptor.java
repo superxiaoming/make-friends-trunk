@@ -75,7 +75,7 @@ public class MyInterceptor implements HandlerInterceptor {
         try {
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e) {
-            returnData(httpServletResponse, Result.getResult(ResponseCode.NO_TOKEN).produceApiResult());
+            returnData(httpServletResponse, Result.getResult(ResponseCode.TOKEN_ERROR).produceApiResult());
             return false;
         }
         return true;

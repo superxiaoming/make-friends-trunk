@@ -36,6 +36,5 @@ public class StudyGoal {
 
     private Integer repeatType;
 
-    @JsonFormat(pattern="HH:mm:ss", timezone = "GMT+8")
-    private Date repeatTime;
+    private String repeatTime;
 }

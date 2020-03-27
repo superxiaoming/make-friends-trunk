@@ -32,7 +32,6 @@ public class LeaveMessageController {
      * @Author: yinshm
      * @Date: 22:07 2020-03-24
      */
-    @PassToken
     @RequestMapping(value = "/getLeaveMessageByCreateFor")
     public Object getLeaveMessageByCreateFor(@RequestParam int createFor){
         ResponseUtil responseUtil;
@@ -47,7 +46,6 @@ public class LeaveMessageController {
      * @Author: yinshm
      * @Date: 22:17 2020-03-24
      */
-    @PassToken
     @RequestMapping(value = "/addLeaveMessage")
     public Object addLeaveMessage(@RequestParam int creatorId, @RequestParam String content, @RequestParam int createFor){
         ResponseUtil responseUtil;

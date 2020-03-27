@@ -18,7 +18,8 @@ public interface StudyGoalDao extends JpaRepository<StudyGoal, Integer> {
 
     @Query(value = "select new com.example.makefriends.entity.response.StudyGoalWithUser(t1.id, t1.creatorId, " +
             "t1.content, t1.repeatType, t1.repeatTime, t2.nickname, t2.age, t2.sex, t2.headpic) " +
-            "from study_goal as t1, sys_user as t2 where t1.creatorId = t2.id")
+            "from study_goal as t1, sys_user as t2 where t1.creatorId = t2.id " +
+            "order by t1.createTime desc")
     List<StudyGoalWithUser> getStudyGoals();
 
     /**
@@ -28,6 +29,9 @@ public interface StudyGoalDao extends JpaRepository<StudyGoal, Integer> {
      */
     @Query(value = "select new com.example.makefriends.entity.response.StudyGoalWithUser(t1.id, t1.creatorId, " +
             "t1.content, t1.repeatType, t1.repeatTime, t2.nickname, t2.age, t2.sex, t2.headpic) " +
-            "from study_goal as t1, sys_user as t2 where t1.creatorId = t2.id and t1.creatorId = :creatorId")
+            "from study_goal as t1, sys_user as t2 where t1.creatorId = t2.id and t1.creatorId = :creatorId " +
+            "order by t1.createTime desc")
     List<StudyGoalWithUser> getStudyGoalsBycreatorId(int creatorId);
+
+    int countByCreatorId(int creatorId);
 }
