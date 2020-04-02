@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @program: visualization
@@ -178,5 +179,17 @@ public class UserController {
             responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(), ResponseCode.FAILED_CODE.getCodeMessage());
             return responseUtil;
         }
+    }
+
+    @RequestMapping(value = "/getUserByUsername")
+    public Object getUserByUsername(@RequestParam String nickname){
+        ResponseUtil responseUtil;
+        List<User> users = userService.findUsersByNickname(nickname);
+        if(users.isEmpty()){
+            responseUtil = new ResponseUtil(ResponseCode.USER_NOT_EXIST.getCodeNumber(), ResponseCode.USER_NOT_EXIST.getCodeMessage());
+            return responseUtil;
+        }
+        responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(), ResponseCode.SUCCESS_CODE.getCodeMessage(), users);
+        return responseUtil;
     }
 }

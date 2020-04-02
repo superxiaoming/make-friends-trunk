@@ -15,7 +15,8 @@ public enum ResponseCode {
     SYSTEM_ERROR(10003,"系统错误"),
     USER_NOT_EXIST(10004,"用户不存在"),
     TOPIC_NOT_EXIST(10005,"话题不存在"),
-    TOKEN_ERROR(10006, "token解析错误");
+    TOKEN_ERROR(10006, "token解析错误"),
+    ALREADY_INSWRT_CONNECTION(10007, "已关注过该用户");
 
     private int codeNumber;
     private String codeMessage;

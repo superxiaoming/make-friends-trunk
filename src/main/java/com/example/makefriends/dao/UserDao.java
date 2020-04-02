@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @program: makefriends
@@ -23,6 +24,8 @@ public interface UserDao extends JpaRepository<User, Integer> {
      * @Date: 00:46 2020-03-19
      */
     User findUserByUsername(String username);
+
+    List<User> findUsersByNickname(String nickname);
     
     /**
      * @description: 通过用户id获取用户信息
