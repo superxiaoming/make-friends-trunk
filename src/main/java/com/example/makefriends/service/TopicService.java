@@ -51,4 +51,6 @@ public class TopicService {
     public void addLikes(int topicId, int likes){ topicDao.addLikes(topicId, likes); }
 
     public int getTopicCountByCreatorId(int creatorId){ return topicDao.countByCreatorId(creatorId); }
+
+    public void deleteTopicById(int topicId){ topicDao.deleteById(topicId); }
 }

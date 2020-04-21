@@ -16,7 +16,8 @@ public enum ResponseCode {
     USER_NOT_EXIST(10004,"用户不存在"),
     TOPIC_NOT_EXIST(10005,"话题不存在"),
     TOKEN_ERROR(10006, "token解析错误"),
-    ALREADY_INSWRT_CONNECTION(10007, "已关注过该用户");
+    ALREADY_INSWRT_CONNECTION(10007, "已关注过该用户"),
+    HAVE_NO_PERMISSION(10008,"没有权限删除");
 
     private int codeNumber;
     private String codeMessage;

@@ -39,6 +39,7 @@ public class MyWebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers (ResourceHandlerRegistry registry){
         registry.addResourceHandler("/static/**")
-                .addResourceLocations("file:///Users/yinshiming/uploadPics/");
+                .addResourceLocations("file:/data/uploadPics/");
+//                .addResourceLocations("file:///Users/yinshiming/uploadPics/");
     }
 }

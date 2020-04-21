@@ -49,4 +49,6 @@ public interface TopicDao extends JpaRepository<Topic, Integer> {
     void addLikes(@Param("topicId")int topicId, @Param("likes") int likes);
 
     int countByCreatorId(int creatorId);
+
+    void deleteById(int topicId);
 }

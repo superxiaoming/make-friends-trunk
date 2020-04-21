@@ -88,6 +88,29 @@ public class TopicController {
         }
     }
 
+    @PassToken
+    @RequestMapping(value = "/deleteTopic")
+    public Object deleteTopic(@RequestParam int topicId, @RequestParam int userId){
+        ResponseUtil responseUtil;
+        Topic topic = topicService.getLikes(topicId);
+        if(topic.getCreatorId() != userId){
+            responseUtil = new ResponseUtil(ResponseCode.HAVE_NO_PERMISSION.getCodeNumber(),
+                    ResponseCode.HAVE_NO_PERMISSION.getCodeMessage());
+            return responseUtil;
+        }
+        try{
+            topicService.deleteTopicById(topicId);
+            responseUtil = new ResponseUtil(ResponseCode.SUCCESS_CODE.getCodeNumber(),
+                    ResponseCode.SUCCESS_CODE.getCodeMessage());
+            return responseUtil;
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseUtil = new ResponseUtil(ResponseCode.FAILED_CODE.getCodeNumber(),
+                    ResponseCode.FAILED_CODE.getCodeMessage());
+            return responseUtil;
+        }
+    }
+
     @RequestMapping(value = "/addLikes")
     public Object addLikes(@RequestParam int topicId){
         ResponseUtil responseUtil;

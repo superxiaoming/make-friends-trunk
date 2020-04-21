@@ -14,7 +14,8 @@ import java.io.IOException;
  */
 public class FileUtils {
 
-    static String rootPath = "/Users/yinshiming/uploadPics";
+//    static String rootPath = "/Users/yinshiming/uploadPics";
+    static String rootPath = "/data/uploadPics";
 
     // static String rootPath = System.getProperty("user.dir") + "/src/main/resources/static";
 
@@ -49,7 +50,7 @@ public class FileUtils {
     }
 
     public static String getPicAddress(HttpServletRequest request, String fileName){
-        return "http://192.168.1.11" + ":" + request.getServerPort() +
+        return "http://112.126.63.23" + ":" + request.getServerPort() +
                 "/makefriends/static/" + fileName;
     }
 
